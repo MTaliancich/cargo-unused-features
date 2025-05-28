@@ -50,7 +50,7 @@ impl TomlInMemory {
                     default_features: false,
                     ..Default::default()
                 };
-                *dependency = cargo_toml::Dependency::Detailed(new_dependency);
+                *dependency = cargo_toml::Dependency::Detailed(Box::new(new_dependency));
             }
             // Detailed dependency notation `x = { version = "1.0", features = ["a", "b"] }`
             cargo_toml::Dependency::Detailed(detailed) => {

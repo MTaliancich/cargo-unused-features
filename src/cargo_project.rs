@@ -233,7 +233,7 @@ impl CargoProject {
                         ..Default::default()
                     }
                 }
-                cargo_toml::Dependency::Detailed(detailed) => detailed,
+                cargo_toml::Dependency::Detailed(detailed) => *detailed,
                 cargo_toml::Dependency::Inherited(_inherited) => cargo_toml::DependencyDetail {
                     ..Default::default()
                 },
