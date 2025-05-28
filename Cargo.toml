@@ -19,7 +19,7 @@ cargo = { version= "0.88", default-features = false}
 cargo_toml= { version= "0.22", default-features = false }
 toml= { version="0.8", default-features = false, features = ["display"] }
 serde= { version="1", default-features = false }
-cargo_metadata = {version="0.15", default-features = false }
+cargo_metadata = {version= "0.20", default-features = false }
 toml_edit = {  version = "0.22", default-features = false, features = ["parse", "display"] }
 anyhow = {version = "1", default-features = false }
 clap = { version= "4", default-features = false, features=["std", "derive", "cargo"] }

@@ -1,10 +1,10 @@
 use std::{
-    collections::{HashMap, HashSet},
+    collections::HashSet,
     fs::{self, File},
     io::{Read, Write},
     path::Path,
 };
-
+use std::collections::BTreeMap;
 use crate::TomlInMemory;
 use cargo::{core::{
     compiler::{BuildConfig, CompileMode},
@@ -271,7 +271,7 @@ impl CargoProject {
                 continue;
             }
 
-            if let Some(crate_dependency) = crate_dependencies.dependencies.get(&package_name) {
+            if let Some(crate_dependency) = crate_dependencies.dependencies.get(package_name.as_str()) {
                 // The manually entered features in toml file.
                 let manual_selected_features: HashSet<String> =
                     HashSet::from_iter(crate_dependency.features.clone().into_iter());
@@ -291,7 +291,7 @@ impl CargoProject {
                 fn gather_manual_selected_features(
                     permutation_features: &mut HashSet<String>,
                     manual_selected_features: &HashSet<String>,
-                    dependency_features: &HashMap<String, Vec<String>>,
+                    dependency_features: &BTreeMap<String, Vec<String>>,
                 ) {
                     for manual_selected_feature in manual_selected_features {
                         if let Some(custom_feature_list) =
@@ -315,7 +315,7 @@ impl CargoProject {
 
                 fn gather_default_enabled_features(
                     permutation_features: &mut HashSet<String>,
-                    dependency_features: &HashMap<String, Vec<String>>,
+                    dependency_features: &BTreeMap<String, Vec<String>>,
                 ) {
                     if let Some(default_features) = dependency_features.get("default") {
                         for default_feature in default_features {
