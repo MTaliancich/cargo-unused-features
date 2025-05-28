@@ -35,7 +35,7 @@ impl PruneCommand {
         for (crate_name, workspace_crate) in report.workspace_crates {
             log::info!("Start pruning features of crate {crate_name}.");
 
-            let contents = fs::read_to_string(&Path::new(&workspace_crate.full_path))?;
+            let contents = fs::read_to_string(Path::new(&workspace_crate.full_path))?;
 
             let mut toml = TomlEdit::new(contents)?;
 
@@ -48,15 +48,11 @@ impl PruneCommand {
 
                 match toml.replace_dependency_features(
                     &dep_name,
-                    diff.cloned().into_iter().collect::<Vec<String>>(),
+                    diff.cloned().collect::<Vec<String>>(),
                 ) {
                     Ok(_) => {}
                     Err(e) => {
-                        log::error!(
-                            "Failed to remove features from dependency {}: {}",
-                            dep_name,
-                            e
-                        );
+                        log::error!("Failed to remove features from dependency {dep_name}: {e}");
                     }
                 }
             }

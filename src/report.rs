@@ -43,8 +43,8 @@ impl Report {
 
         log::info!("Loading report from {}.", path.display());
 
-        let mut permutated_toml_file = File::open(path).unwrap();
-        permutated_toml_file.read_to_string(&mut contents).unwrap();
+        let mut permutated_toml_file = File::open(path)?;
+        permutated_toml_file.read_to_string(&mut contents)?;
 
         if let Ok(report) = serde_json::from_str(&contents) {
             log::info!("Successfully loaded report from {}.", path.display());

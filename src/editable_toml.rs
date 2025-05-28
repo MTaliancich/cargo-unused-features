@@ -39,7 +39,7 @@ impl TomlEdit {
             .get_mut(dependency)
             .ok_or_else(|| anyhow::anyhow!("Dependency not found in toml document"))?;
 
-        let features_to_add = Array::from_iter(features.into_iter());
+        let features_to_add = Array::from_iter(features);
 
         // Short dependency notation `x = "1.0"`
         if let Some(version) = dependency.as_str() {

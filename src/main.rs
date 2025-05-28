@@ -21,7 +21,7 @@ fn main() {
     match subcommand.execute() {
         Ok(_) => log::info!("Finished the process"),
         Err(e) => {
-            log::error!("{}", e);
+            log::error!("{e}");
             std::process::exit(1);
         }
     }

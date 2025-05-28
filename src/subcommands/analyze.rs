@@ -64,7 +64,7 @@ impl AnalyzeCommand {
             .take()
             .unwrap_or_else(|| current_exe.display().to_string());
 
-        log::info!("{}", workspace_path);
+        log::info!("{workspace_path}");
 
         let crate_path = Path::new(&workspace_path);
 
@@ -136,7 +136,7 @@ fn permutate_features(
 
     let mut workspace_report = WorkspaceCrate::new(&toml.toml_path());
 
-    log::info!("{}", format!("|===== Crate '{}' =====|", toml.crate_name()));
+    log::info!("|===== Crate '{}' =====|", toml.crate_name());
 
     log::info!("Start pruning feature flags. The process will recompile the project {total_features} times.");
 
@@ -148,16 +148,13 @@ fn permutate_features(
     {
         let mut dependency_progress = 100.0 / total_deps * i as f32;
         let next_dependency_progress = 100.0 / total_deps * (i as f32 + 1.0);
-        let dependency_progress_str = format!("[{:.1}%]", dependency_progress);
+        let dependency_progress_str = format!("[{dependency_progress:.1}%]");
 
         log::info!(
-            "{}",
-            format!(
                 "{}: ==== Dependency '{}', removing {} flags =====",
                 dependency_progress_str,
                 dependency_name,
                 config.len()
-            )
         );
 
         let mut feature_buffer =
@@ -167,17 +164,11 @@ fn permutate_features(
             (next_dependency_progress - dependency_progress) / feature_buffer.left_count() as f32;
 
         while !feature_buffer.features_left() {
-            let feature_progress_str = format!("[{:.1}%]", dependency_progress);
+            let feature_progress_str = format!("[{dependency_progress:.1}%]");
 
             let (permutated_features, removed_feature) = feature_buffer.permutated_features();
 
-            log::info!(
-                "{}",
-                format!(
-                    "{}: Prune '{}' feature flag from '{}'",
-                    feature_progress_str, removed_feature, dependency_name,
-                )
-            );
+            log::info!("{feature_progress_str}: Prune '{removed_feature}' feature flag from '{dependency_name}'");
 
             if let Err(e) = toml.replace_dependency_features(dependency_name, permutated_features) {
                 log::error!("Error while pruning feature flag. error: {e}");
@@ -212,13 +203,7 @@ fn permutate_features(
                         .unsuccessfully_removed_features
                         .insert(removed_feature.clone());
 
-                    log::debug!(
-                        "{}",
-                        format!(
-                            "{}: Failed to compile without feature flag. error: {}",
-                            feature_progress_str, e
-                        )
-                    );
+                    log::debug!("{feature_progress_str}: Failed to compile without feature flag. error: {e}");
                 }
             }
 
@@ -228,8 +213,7 @@ fn permutate_features(
         }
 
         log::debug!(
-            "{}: Finished stripping feature flags from dependency {}.",
-            dependency_progress_str,
+            "{dependency_progress_str}: Finished stripping feature flags from dependency {}.",
             toml.crate_name()
         );
 

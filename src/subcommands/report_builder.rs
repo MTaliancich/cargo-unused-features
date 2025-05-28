@@ -81,7 +81,7 @@ impl ReportBuildingCommand {
 
         fs::write(&report_path, html_report)?;
 
-        log::info!("Written HTML report to {}", report_path);
+        log::info!("Written HTML report to {report_path}");
 
         Ok(())
     }
@@ -101,25 +101,23 @@ fn totals_overview_table(
            <th>Total Potential Removable Features</th>
        </tr>
        <tr>
-        <td>{}</td>
-        <td>{}</td>
-        <td>{}</td>
+        <td>{total_features}</td>
+        <td>{total_removed_features}</td>
+        <td>{total_crates}</td>
        </tr>
     </table>
-       ",
-        total_features, total_removed_features, total_crates
+       "
     )
 }
 
 fn collapsable_header(table: String, crate_name: String, full_path: String) -> String {
     format!(
         " 
-        <button type='button' class='collapsible'><h3>{}</h3></button>
+        <button type='button' class='collapsible'><h3>{crate_name}</h3></button>
         <div class='content'>
-            <i style='margin: 5px' class='styled-table'>{}</i>
-            {}
-        </div>",
-        crate_name, full_path, table
+            <i style='margin: 5px' class='styled-table'>{full_path}</i>
+            {table}
+        </div>"
     )
 }
 
@@ -143,15 +141,11 @@ fn dependency_html_table(crate_name: String, dependency: ReportDependencyEntry) 
     let dependency_html = format!(
         "
         <tr>
-            <td>{}</td>
-            <td>{}</td>
-            <td>{}</td>
-            <td>{}</td>
-        </tr>",
-        crate_name,
-        original_features,
-        successfully_removed_features,
-        unsuccessfully_removed_features
+            <td>{crate_name}</td>
+            <td>{original_features}</td>
+            <td>{successfully_removed_features}</td>
+            <td>{unsuccessfully_removed_features}</td>
+        </tr>"
     );
 
     dependency_html
@@ -167,10 +161,9 @@ fn dependencies_table(dependency_rows: String) -> String {
             <th>Potential Removable</th>
             <th>Unremovable</th>
         </tr>
-        {}
+        {dependency_rows}
         </table>       
-       ",
-        dependency_rows
+       "
     )
 }
 
@@ -235,8 +228,8 @@ fn html_report(totals_overview_html: String, html_body: String) -> String {
         </head>
         
         <body>
-            {}
-            {}
+            {totals_overview_html}
+            {html_body}
         </body>
         
         </html>
@@ -257,7 +250,6 @@ fn html_report(totals_overview_html: String, html_body: String) -> String {
                 }});
             }}
         </script>
-    </html>",
-        totals_overview_html, html_body
+    </html>"
     )
 }
