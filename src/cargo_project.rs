@@ -6,14 +6,11 @@ use std::{
 };
 
 use crate::TomlInMemory;
-use cargo::{
-    core::{
-        compiler::{BuildConfig, CompileMode},
-        Shell, Verbosity, Workspace,
-    },
-    ops::{CompileFilter, CompileOptions},
-    Config,
-};
+use cargo::{core::{
+    compiler::{BuildConfig, CompileMode},
+    Shell, Verbosity, Workspace,
+}, ops::{CompileFilter, CompileOptions}, GlobalContext};
+use cargo::util::context::JobsConfig;
 use cargo_metadata::Metadata;
 
 use crate::{create_dependencies::CrateDependencies, subcommands::analyze::AnalyzeCommand};
@@ -135,7 +132,7 @@ impl CargoProject {
 
     /// Tries to compile the project of the this toml file.    
     pub fn try_compile(&self) -> anyhow::Result<()> {
-        let config = Config::default()?;
+        let config = GlobalContext::default()?;
 
         let buffer = Box::new(Vec::new());
         *config.shell() = Shell::from_write(buffer);
@@ -146,7 +143,7 @@ impl CargoProject {
         // Pass custom target if configured.
         compile_options.build_config = BuildConfig::new(
             &config,
-            self.config.parallel_build_jobs,
+            self.config.parallel_build_jobs.map(JobsConfig::Integer),
             false,
             self.config.build_target.as_slice(),
             CompileMode::Build,
