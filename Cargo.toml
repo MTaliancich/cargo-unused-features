@@ -14,17 +14,17 @@ exclude = ["target", "Cargo.lock"]
 categories = ["command-line-utilities", "command-line-interface", "development-tools", "development-tools::cargo-plugins"]
 
 [dependencies]
-serde_json = { version="1.0", default-features = false}
-cargo = { version="0.68.0", default-features = false}
-cargo_toml= { version="0.15.1", default-features = false }
+serde_json = { version="1", default-features = false}
+cargo = { version="0.68", default-features = false}
+cargo_toml= { version="0.15", default-features = false }
 toml= { version="0.7", default-features = false }
-serde= { version="1.0", default-features = false }
-cargo_metadata = {version="0.15.0", default-features = false }
-toml_edit = {  version = "0.19.3", default-features = false }
-anyhow = {version = "1.0.58", default-features = false }
-clap = { version="3.2.10", default-features = false, features=["std", "derive", "cargo"] }
+serde= { version="1", default-features = false }
+cargo_metadata = {version="0.15", default-features = false }
+toml_edit = {  version = "0.19", default-features = false }
+anyhow = {version = "1", default-features = false }
+clap = { version= "4", default-features = false, features=["std", "derive", "cargo"] }
 log = { version = "0.4", default-features = false }
-env_logger= { version = "0.10", default-features = false }
+env_logger= { version = "0.11", default-features = false }
 
 [[bin]]
 name = "unused-features"

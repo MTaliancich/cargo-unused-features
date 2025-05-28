@@ -9,7 +9,6 @@ use clap::Args;
 /// Analyzes the workspace for unused, but, enabled feature flags.
 #[derive(Args, Debug, Clone, Default)]
 #[clap(author, version)]
-#[clap(setting = clap::AppSettings::DeriveDisplayOrder)]
 pub struct AnalyzeCommand {
     /// The absolute root 'directory' of the toml project or workspace.
     /// If not specified it will take the current executable directory.
