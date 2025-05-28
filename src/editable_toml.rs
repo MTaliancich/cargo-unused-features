@@ -1,15 +1,15 @@
-use toml_edit::{Array, Document, Formatted, InlineTable, Item, Value};
+use toml_edit::{Array, DocumentMut, Formatted, InlineTable, Item, Value};
 
 /// An in memory toml file that can be used to edit the toml file without altering formatting, spaces, comments, etc..
 pub struct TomlEdit {
-    pub toml_document: Document,
+    pub toml_document: DocumentMut,
     original_dependencies: Item,
 }
 
 impl TomlEdit {
     /// Crates a in-memory toml definition from the given toml contents.
     pub fn new(toml_contents: String) -> anyhow::Result<Self> {
-        let toml_document = toml_contents.parse::<Document>()?;
+        let toml_document = toml_contents.parse::<DocumentMut>()?;
 
         let original_dependencies = toml_document
             .get("dependencies")
